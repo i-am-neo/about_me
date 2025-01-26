@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="weepeople.css">
+
+
+<style>
+
+#people_canvas {
+	font-size:60px;
+	font-weight:400;
+	letter-spacing:-25px
+}
+
+
+.counter {
+  font: 400 60px/100px "Helvetica Neue";
+  margin: 0;
+}
+
+p {
+  font: 400 30px/30px "Helvetica Neue";
+  margin: 100;
+  padding-top:5em;
+  left:100px;
+  width:100%;
+  text-shadow:0 1px 0 #000;
+}
+
+
+.normal_text {
+  font: 400 20px/20px "Helvetica Neue";
+  margin: 25;
+}
+
+
+footer {
+  font: 400 15px/15px "Helvetica Neue";
+  margin: 25;
+}
+
+</style>
+
+
+<div id="man_hours" style="padding-top:0;">
+  <p>Your organization's workload is increasing.
+  <span id="man_hours_canvas" class="counter">0</span>
+person-hours
+  <br>Your headcount budget is not.
+  <!-- t n -->
+  <span id="people_canvas" class="weepeople">a b c d e f g h i j k l m n o p q r s t u U N X Y Z</span>
+  </p>
+</div>
+
+<div style="padding-top:0;">
+  <br>
+  <br>
+  <br>
+</div>
+
+<div style="padding-top:0;">
+  <p style="padding-top:5em;left:0;width:100%;text-shadow:0 1px 0 #000;">Moreover,
+  <br>Your planning department just lost two heads.
+  <br>Your support team is no longer keeping up with managing your customer inventory.
+  </p>
+</div>
+
+<div style="padding-top:0;">
+  <p style="padding-top:5em;left:0;width:100%;text-shadow:0 1px 0 #000;">Here's a suggestion.
+  <br>Offload some of the workload to Neo.
+  </p>
+</div>
+
+<div style="padding-top:0;">
+  <p style="padding-top:5em;left:0;width:100%;text-shadow:0 1px 0 #000;">Neo is a Teachable AI,
+  <br>one you teach to execute tasks for a team,
+reliably, and transparently.
+<br>
+Neo does not hallucinate, and is private to your company.
+  </p>
+</div>
+
+<div style="padding-top:0;">
+  <span class="normal_text">
+  Learn how Neo is tasked to synchronize a manufacturer's ERP system
+with ever-changing customer inventory plans,
+<br>
+to recoup 40 hours from a single team's monthly workload.
+<br>
+<br>
+Learn how Neo helped a CAD company onboard large clients with wildly variable part numbers descriptions,
+<br>
+eliminating 40 hours off each onboarding process.
+  </span>
+</div>
+
+<div style="padding-top:0;">
+  <br>
+  <br>
+  <br>
+</div>
+
+<footer>&copy;2024 Pragmatic AI&emsp;<q>the folks</q> (sans blank) at this domain
+<br>
+Useful, reliable, and transparent Artificial Intelligence products for tomorrow's workforce.
+</footer>
+
+<script src="//d3js.org/d3.v4.0.0-alpha.23.min.js"></script>
+<script>
+
+var format = d3.format(",d");
+
+var start_number = 120 * 40 * 4 * 12;   // 120 FTE * 40 hours/week * 4 week/month
+var increment = 2 * 40 * 4;   // 1 FTE * 40 hours/week * 4 week/month
+var counter = 0;
+
+d3.select("#man_hours_canvas")
+  .transition()
+    .duration(2500)
+    .on("start", function repeat() {
+      d3.active(this)
+          .tween("text", function() {
+                var that = d3.select(this);
+                var a_number;
+                if (counter == 0) {
+                    a_number = start_number;
+                }
+                else {
+                    a_number = (counter * increment) + start_number;
+                }
+                var i = d3.interpolateNumber(that.text().replace(/,/g, ""), a_number);
+                counter = counter + 1;
+            return function(t) { that.text(format(i(t))); };
+          })
+        .transition()
+          .delay(500)
+          .on("start", repeat);
+    });
+
+
+d3.transition()
+    .delay(3000)
+    .duration(8500)
+    .tween("scroll", scrollTween(document.body.getBoundingClientRect().height - window.innerHeight + 50));
+
+function scrollTween(offset) {
+  return function() {
+    var i = d3.interpolateNumber(window.pageYOffset || document.documentElement.scrollTop, offset);
+    return function(t) { scrollTo(0, i(t)); };
+  };
+}
+
+</script>
+
